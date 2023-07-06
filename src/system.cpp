@@ -1853,9 +1853,9 @@ json System::OutputDataJson() const {
     dynamics["linear_momentum"] = LinearMomentum();
     dynamics["angular_momentum"] = AngularMomentum();
   }
-  if (output_format.customize) {
-    dynamics["customize"] = CustomizeData(*this);
-  }
+  // if (output_format.customize) {
+  //   dynamics["customize"] = CustomizeData(*this);
+  // }
 
   std::vector<std::vector<ld>> orbs;
   // Calculate orbital elements.
@@ -2054,8 +2054,8 @@ void System::InitMatFile() const {
         OutputHamiltonian(data, Hamiltonian_file);
       if (output_format.momentum)
         OutputMomentum(data, momentum_file);
-      if (output_format.customize)
-        OutputCustomizeData(data, customize_file);
+      // if (output_format.customize)
+      //   OutputCustomizeData(data, customize_file);
     }
     fin.close();
   }
@@ -2104,15 +2104,15 @@ void System::AppendMatFile(const std::vector<json> &j) const {
     momentum_file.close();
   }
 
-  // Append the customized output data.
-  if (output_format.customize) {
-    std::ofstream customize_file;
-    customize_file =
-        std::ofstream(sys_dir + "/data_in_mat/customize", std::ios::app);
-    for (auto &e : j)
-      OutputCustomizeData(e, customize_file);
-    customize_file.close();
-  }
+  // // Append the customized output data.
+  // if (output_format.customize) {
+  //   std::ofstream customize_file;
+  //   customize_file =
+  //       std::ofstream(sys_dir + "/data_in_mat/customize", std::ios::app);
+  //   for (auto &e : j)
+  //     OutputCustomizeData(e, customize_file);
+  //   customize_file.close();
+  // }
 }
 
 void System::OutputBodyData(const json &j,
@@ -2188,17 +2188,17 @@ void System::OutputMomentum(const json &j, std::ofstream &fout) const {
   fout << std::endl;
 }
 
-void System::OutputCustomizeData(const json &j, std::ofstream &fout) const {
-  fout << std::setprecision(std::numeric_limits<double>::digits10 + 1)
-       << std::left << std::scientific << std::left << std::setw(30)
-       << double(j["time"]);
+// void System::OutputCustomizeData(const json &j, std::ofstream &fout) const {
+//   fout << std::setprecision(std::numeric_limits<double>::digits10 + 1)
+//        << std::left << std::scientific << std::left << std::setw(30)
+//        << double(j["time"]);
 
-  auto customize = j["customize"];
+//   auto customize = j["customize"];
 
-  for (json::iterator it = customize.begin(); it != customize.end(); it++) {
-    fout << std::setw(30) << it.value();
-  }
-  fout << std::endl;
-}
+//   for (json::iterator it = customize.begin(); it != customize.end(); it++) {
+//     fout << std::setw(30) << it.value();
+//   }
+//   fout << std::endl;
+// }
 
 } // namespace rb_sim

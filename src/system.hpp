@@ -206,7 +206,7 @@ private:
   void OutputBodyData(const json &j, std::vector<std::ofstream> &fouts) const;
   void OutputHamiltonian(const json &j, std::ofstream &fout) const;
   void OutputMomentum(const json &j, std::ofstream &fout) const;
-  void OutputCustomizeData(const json &j, std::ofstream &fout) const;
+  // void OutputCustomizeData(const json &j, std::ofstream &fout) const;
 
   // Sanity check: serialization and deserialization.
   void SanityCheck();
@@ -349,6 +349,6 @@ inline std::ostream &operator<<(std::ostream &os, const System &sys) {
 
 } // namespace rb_sim
 
-std::vector<ld> CustomizeData(const rb_sim::System &sys);
+// std::vector<ld> CustomizeData(const rb_sim::System &sys);
 
 #endif

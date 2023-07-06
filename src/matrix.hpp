@@ -1,7 +1,7 @@
 #ifndef MATRIX_H_
 #define MATRIX_H_
 
-#include "json.hpp"
+#include "../include/json.hpp"
 #include <algorithm>
 #include <array>
 #include <cassert>
