@@ -261,8 +261,6 @@ void System::Json2OutputFormat(const json &j) {
     output_format.Hamiltonian = j["Hamiltonian"];
   if (j.contains("momentum"))
     output_format.momentum = j["momentum"];
-  if (j.contains("customize"))
-    output_format.customize = j["customize"];
 }
 
 json System::OutputFormat2Json() const {
@@ -278,7 +276,6 @@ json System::OutputFormat2Json() const {
   j["Eheat"] = output_format.Eheat;
   j["Hamiltonian"] = output_format.Hamiltonian;
   j["momentum"] = output_format.momentum;
-  j["customize"] = output_format.customize;
   return j;
 }
 
@@ -1853,9 +1850,6 @@ json System::OutputDataJson() const {
     dynamics["linear_momentum"] = LinearMomentum();
     dynamics["angular_momentum"] = AngularMomentum();
   }
-  // if (output_format.customize) {
-  //   dynamics["customize"] = CustomizeData(*this);
-  // }
 
   std::vector<std::vector<ld>> orbs;
   // Calculate orbital elements.
@@ -2033,15 +2027,6 @@ void System::InitMatFile() const {
                   << "angular_momentum_z" << std::endl;
   }
 
-  // Create the file to store the customized output data.
-  std::ofstream customize_file;
-  if (output_format.customize) {
-    customize_file =
-        std::ofstream(sys_dir + "/data_in_mat/customize", std::ios::trunc);
-    customize_file << std::setw(30) << "time" << std::setw(30)
-                   << "your_customize_data_array" << std::endl;
-  }
-
   // Output information to `body_files` line by line from "data_tmp.json"
   // if "data_tmp.json" exists.
   std::ifstream fin(sys_dir + "/data_tmp.json");
@@ -2054,8 +2039,6 @@ void System::InitMatFile() const {
         OutputHamiltonian(data, Hamiltonian_file);
       if (output_format.momentum)
         OutputMomentum(data, momentum_file);
-      // if (output_format.customize)
-      //   OutputCustomizeData(data, customize_file);
     }
     fin.close();
   }
@@ -2067,8 +2050,6 @@ void System::InitMatFile() const {
     Hamiltonian_file.close();
   if (output_format.momentum)
     momentum_file.close();
-  if (output_format.customize)
-    customize_file.close();
 }
 
 void System::AppendMatFile(const std::vector<json> &j) const {
@@ -2104,15 +2085,6 @@ void System::AppendMatFile(const std::vector<json> &j) const {
     momentum_file.close();
   }
 
-  // // Append the customized output data.
-  // if (output_format.customize) {
-  //   std::ofstream customize_file;
-  //   customize_file =
-  //       std::ofstream(sys_dir + "/data_in_mat/customize", std::ios::app);
-  //   for (auto &e : j)
-  //     OutputCustomizeData(e, customize_file);
-  //   customize_file.close();
-  // }
 }
 
 void System::OutputBodyData(const json &j,
@@ -2187,18 +2159,5 @@ void System::OutputMomentum(const json &j, std::ofstream &fout) const {
     fout << std::setw(30) << ang_mom[j].dump();
   fout << std::endl;
 }
-
-// void System::OutputCustomizeData(const json &j, std::ofstream &fout) const {
-//   fout << std::setprecision(std::numeric_limits<double>::digits10 + 1)
-//        << std::left << std::scientific << std::left << std::setw(30)
-//        << double(j["time"]);
-
-//   auto customize = j["customize"];
-
-//   for (json::iterator it = customize.begin(); it != customize.end(); it++) {
-//     fout << std::setw(30) << it.value();
-//   }
-//   fout << std::endl;
-// }
 
 } // namespace rb_sim

@@ -37,7 +37,6 @@ struct OutputFormat {
   bool Eheat = true;
   bool Hamiltonian = true;
   bool momentum = true;
-  bool customize = true;
 };
 
 enum Coordinates { CENTRAL, BARYCENTRIC, JACOBI };
@@ -206,7 +205,6 @@ private:
   void OutputBodyData(const json &j, std::vector<std::ofstream> &fouts) const;
   void OutputHamiltonian(const json &j, std::ofstream &fout) const;
   void OutputMomentum(const json &j, std::ofstream &fout) const;
-  // void OutputCustomizeData(const json &j, std::ofstream &fout) const;
 
   // Sanity check: serialization and deserialization.
   void SanityCheck();
@@ -244,8 +242,7 @@ private:
                                                            .Ftf = false,
                                                            .Eheat = false,
                                                            .Hamiltonian = false,
-                                                           .momentum = false,
-                                                           .customize = false};
+                                                           .momentum = false};
 
   static constexpr const Parameters kDefaultParameters{.step_size = 1e-3,
                                                        .save_interval = 1.0,
@@ -348,7 +345,5 @@ inline std::ostream &operator<<(std::ostream &os, const System &sys) {
 }
 
 } // namespace rb_sim
-
-// std::vector<ld> CustomizeData(const rb_sim::System &sys);
 
 #endif
